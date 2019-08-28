@@ -1,1 +1,9 @@
-# Trabalho1_Grafos_LuisGustavoAvelino_MatheusFelizola
+# Trabalho1 Grafos
+
+
+Alunos:
+
+|Nome|Matrícula|
+|--|--|
+|Luis Gustavo Avelino |15/0016310|
+|Matheus Felizola| |

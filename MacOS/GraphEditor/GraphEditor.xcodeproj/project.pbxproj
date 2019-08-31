@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E41A348231AED5F0077AD24 /* Edge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E41A344231AED5F0077AD24 /* Edge.swift */; };
+		6E41A349231AED5F0077AD24 /* AdjacencyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E41A345231AED5F0077AD24 /* AdjacencyList.swift */; };
+		6E41A34A231AED5F0077AD24 /* Graphable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E41A346231AED5F0077AD24 /* Graphable.swift */; };
+		6E41A34B231AED5F0077AD24 /* Vertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E41A347231AED5F0077AD24 /* Vertex.swift */; };
 		E2EE344F231A0978005C393C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EE344E231A0978005C393C /* AppDelegate.swift */; };
 		E2EE3455231A0978005C393C /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EE3454231A0978005C393C /* GameScene.swift */; };
 		E2EE3457231A0978005C393C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EE3456231A0978005C393C /* ViewController.swift */; };
@@ -16,6 +20,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6E41A344231AED5F0077AD24 /* Edge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Edge.swift; path = ../../../../Graph/Graph/Edge.swift; sourceTree = "<group>"; };
+		6E41A345231AED5F0077AD24 /* AdjacencyList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AdjacencyList.swift; path = ../../../../Graph/Graph/AdjacencyList.swift; sourceTree = "<group>"; };
+		6E41A346231AED5F0077AD24 /* Graphable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Graphable.swift; path = ../../../../Graph/Graph/Graphable.swift; sourceTree = "<group>"; };
+		6E41A347231AED5F0077AD24 /* Vertex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Vertex.swift; path = ../../../../Graph/Graph/Vertex.swift; sourceTree = "<group>"; };
 		E2EE344B231A0978005C393C /* GraphEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GraphEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2EE344E231A0978005C393C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E2EE3454231A0978005C393C /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -38,6 +46,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6E41A343231AED4A0077AD24 /* Graph */ = {
+			isa = PBXGroup;
+			children = (
+				6E41A345231AED5F0077AD24 /* AdjacencyList.swift */,
+				6E41A344231AED5F0077AD24 /* Edge.swift */,
+				6E41A346231AED5F0077AD24 /* Graphable.swift */,
+				6E41A347231AED5F0077AD24 /* Vertex.swift */,
+			);
+			path = Graph;
+			sourceTree = "<group>";
+		};
+		6E41A34E231AF3FC0077AD24 /* GraphNode */ = {
+			isa = PBXGroup;
+			children = (
+				E2EE3464231A96B5005C393C /* GraphNode.swift */,
+			);
+			path = GraphNode;
+			sourceTree = "<group>";
+		};
 		E2EE3442231A0978005C393C = {
 			isa = PBXGroup;
 			children = (
@@ -57,6 +84,8 @@
 		E2EE344D231A0978005C393C /* GraphEditor */ = {
 			isa = PBXGroup;
 			children = (
+				6E41A34E231AF3FC0077AD24 /* GraphNode */,
+				6E41A343231AED4A0077AD24 /* Graph */,
 				E2EE344E231A0978005C393C /* AppDelegate.swift */,
 				E2EE3454231A0978005C393C /* GameScene.swift */,
 				E2EE3456231A0978005C393C /* ViewController.swift */,
@@ -64,7 +93,6 @@
 				E2EE345A231A097A005C393C /* Main.storyboard */,
 				E2EE345D231A097A005C393C /* Info.plist */,
 				E2EE345E231A097A005C393C /* GraphEditor.entitlements */,
-				E2EE3464231A96B5005C393C /* GraphNode.swift */,
 			);
 			path = GraphEditor;
 			sourceTree = "<group>";
@@ -139,9 +167,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E41A349231AED5F0077AD24 /* AdjacencyList.swift in Sources */,
+				6E41A34A231AED5F0077AD24 /* Graphable.swift in Sources */,
 				E2EE3457231A0978005C393C /* ViewController.swift in Sources */,
 				E2EE3455231A0978005C393C /* GameScene.swift in Sources */,
 				E2EE3465231A96B5005C393C /* GraphNode.swift in Sources */,
+				6E41A34B231AED5F0077AD24 /* Vertex.swift in Sources */,
+				6E41A348231AED5F0077AD24 /* Edge.swift in Sources */,
 				E2EE344F231A0978005C393C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -280,13 +312,14 @@
 				CODE_SIGN_ENTITLEMENTS = GraphEditor/GraphEditor.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 3FC5P297B6;
+				DEVELOPMENT_TEAM = A93689JNSR;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = GraphEditor/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = com.felizola.GraphEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -300,13 +333,14 @@
 				CODE_SIGN_ENTITLEMENTS = GraphEditor/GraphEditor.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 3FC5P297B6;
+				DEVELOPMENT_TEAM = A93689JNSR;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = GraphEditor/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = com.felizola.GraphEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

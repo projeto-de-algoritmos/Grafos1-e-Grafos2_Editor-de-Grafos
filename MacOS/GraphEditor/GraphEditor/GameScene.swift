@@ -14,24 +14,30 @@ class GameScene: SKScene {
     var isDrawingLine = false
     var currentlyDrawnLine: SKShapeNode?
     var currentInitialPositionOfLine: CGPoint?
+    var adjacencyList = AdjacencyList<GraphNode>()
+
+    fileprivate var initialNode: GraphNode?
+    fileprivate var endNode: GraphNode?
     
     override func didMove(to view: SKView) {
         self.backgroundColor = .white
     }
     
-    func touchDown(atPoint pos : CGPoint) {
+    func touchDown(atPoint pos: CGPoint) {
         
     }
     
-    func touchMoved(toPoint pos : CGPoint) {
+    func touchMoved(toPoint pos: CGPoint) {
         
     }
     
-    func touchUp(atPoint pos : CGPoint) {
+    func touchUp(atPoint pos: CGPoint) {
         let graphNode = GraphNode(index: nodeIndex)
         nodeIndex += 1
         self.addChild(graphNode)
         graphNode.position = CGPoint(x: pos.x, y: pos.y)
+
+        _ = adjacencyList.createVertex(data: graphNode)
     }
     
     override func mouseDown(with event: NSEvent) {
@@ -42,6 +48,7 @@ class GameScene: SKScene {
         for touchedNode in touchedNodes {
             if touchedNode is GraphNode {
                 touchedGraphNode = (touchedNode as! GraphNode)
+                initialNode = touchedGraphNode
                 break
             }
         }
@@ -64,7 +71,7 @@ class GameScene: SKScene {
     
     override func mouseDragged(with event: NSEvent) {
         self.touchMoved(toPoint: event.location(in: self))
-        if(isDrawingLine) {
+        if isDrawingLine {
             let linePath = CGMutablePath()
             linePath.move(to: currentInitialPositionOfLine!)
             linePath.addLine(to: event.location(in: self))
@@ -80,6 +87,7 @@ class GameScene: SKScene {
         for touchedNode in touchedNodes {
             if touchedNode is GraphNode {
                 touchedGraphNode = (touchedNode as! GraphNode)
+                endNode = touchedGraphNode
                 break
             }
         }
@@ -96,6 +104,22 @@ class GameScene: SKScene {
             currentInitialPositionOfLine = nil
             currentlyDrawnLine = nil
             isDrawingLine = false
+
+            if let _initialNode = initialNode,
+                let _endNode = endNode,
+                _initialNode != endNode {
+
+                guard let initialVertex = adjacencyList.adjacencyDict.keys.first(where: { ($0.data.childNode(withName: "graphNodeIndex") as? SKLabelNode)?.text == (_initialNode.childNode(withName: "graphNodeIndex") as? SKLabelNode)?.text }) else { return }
+                guard let endVertex = adjacencyList.adjacencyDict.keys.first(where: { ($0.data.childNode(withName: "graphNodeIndex") as? SKLabelNode)?.text == (_endNode.childNode(withName: "graphNodeIndex") as? SKLabelNode)?.text }) else { return }
+
+                adjacencyList.add(.undirected, from: initialVertex, to: endVertex, weight: 0)
+
+                print(adjacencyList.description)
+            }
+
+            initialNode = nil
+            endNode = nil
+
         } else {
             self.touchUp(atPoint: event.location(in: self))
         }

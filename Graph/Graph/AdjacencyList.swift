@@ -26,6 +26,8 @@ class AdjacencyList<T: Hashable> {
 }
 
 extension AdjacencyList: Graphable {
+    public typealias Element = T
+    
     var description: CustomStringConvertible {
         var result = ""
         for (vertex, edges) in adjacencyDict {
@@ -79,7 +81,4 @@ extension AdjacencyList: Graphable {
     func edges(from source: Vertex<Element>) -> [Edge<Element>]? {
         return adjacencyDict[source]
     }
-
-
-    public typealias Element = T
 }

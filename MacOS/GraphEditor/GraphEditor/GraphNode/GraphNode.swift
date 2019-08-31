@@ -9,32 +9,32 @@
 import SpriteKit
 
 class GraphNode: SKShapeNode {
-    /*override var isUserInteractionEnabled: Bool {
-        get {
-            return true
-        } set {}
-    }*/
-    
+
+    let graphNodeIndex: SKLabelNode!
+
     init(index: Int) {
+        graphNodeIndex = SKLabelNode(text: String(index))
+        graphNodeIndex.fontColor = .black
+        graphNodeIndex.name = "graphNodeIndex"
+        graphNodeIndex.verticalAlignmentMode = .center
+
         super.init()
+
         let radius = 30
         self.path = CGPath(ellipseIn: CGRect(x: -radius, y: -radius, width: radius*2, height: radius*2), transform: nil)
         self.fillColor = .white
         self.strokeColor = .black
         self.lineWidth = 3
         
-        let graphNodeIndex = SKLabelNode(text: String(index))
-        graphNodeIndex.fontColor = .black
         self.addChild(graphNodeIndex)
-        graphNodeIndex.verticalAlignmentMode = .center
     }
-    
-    /*override func mouseDown(with event: NSEvent) {
-        super.mouseDown(with: event)
-        
-    }*/
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    override var description: String {
+        return graphNodeIndex.text ?? "-1"
+    }
 }
+

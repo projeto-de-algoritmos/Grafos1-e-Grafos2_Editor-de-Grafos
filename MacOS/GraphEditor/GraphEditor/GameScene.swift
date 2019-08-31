@@ -138,3 +138,38 @@ class GameScene: SKScene {
         // Called before each frame is rendered
     }
 }
+
+// MARK: - DFS
+
+func depthFirstSearch<T: Hashable>(from start: Vertex<T>, to end: Vertex<T>, graph: AdjacencyList<T>) -> Stack<Vertex<T>> {
+
+    var visited = Set<Vertex<T>>()
+    var stack = Stack<Vertex<T>>()
+
+    // TODO: -
+    stack.push(start)
+    visited.insert(start)
+
+    outer: while let vertex = stack.peek(), vertex != end {
+
+        guard let neighbors = graph.edges(from: vertex),
+            neighbors.count > 0 else {
+                _ = stack.pop()
+                continue
+        }
+
+        for edge in neighbors {
+            if !visited.contains(edge.destination) {
+                visited.insert(edge.destination)
+                stack.push(edge.destination)
+                print(stack.description)
+                continue outer
+            }
+        }
+
+        print("backtrack from \(vertex)")
+        _ = stack.pop()
+    }
+
+    return stack
+}

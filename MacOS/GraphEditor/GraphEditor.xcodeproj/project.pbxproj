@@ -20,10 +20,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		6E41A344231AED5F0077AD24 /* Edge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Edge.swift; path = ../../../../Graph/Graph/Edge.swift; sourceTree = "<group>"; };
-		6E41A345231AED5F0077AD24 /* AdjacencyList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AdjacencyList.swift; path = ../../../../Graph/Graph/AdjacencyList.swift; sourceTree = "<group>"; };
-		6E41A346231AED5F0077AD24 /* Graphable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Graphable.swift; path = ../../../../Graph/Graph/Graphable.swift; sourceTree = "<group>"; };
-		6E41A347231AED5F0077AD24 /* Vertex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Vertex.swift; path = ../../../../Graph/Graph/Vertex.swift; sourceTree = "<group>"; };
+		6E41A344231AED5F0077AD24 /* Edge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Edge.swift; sourceTree = "<group>"; };
+		6E41A345231AED5F0077AD24 /* AdjacencyList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdjacencyList.swift; sourceTree = "<group>"; };
+		6E41A346231AED5F0077AD24 /* Graphable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Graphable.swift; sourceTree = "<group>"; };
+		6E41A347231AED5F0077AD24 /* Vertex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vertex.swift; sourceTree = "<group>"; };
 		E2EE344B231A0978005C393C /* GraphEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GraphEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2EE344E231A0978005C393C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E2EE3454231A0978005C393C /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };

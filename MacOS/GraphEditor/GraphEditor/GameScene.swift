@@ -109,8 +109,8 @@ class GameScene: SKScene {
                 let _endNode = endNode,
                 _initialNode != endNode {
 
-                guard let initialVertex = adjacencyList.adjacencyDict.keys.first(where: { ($0.data.childNode(withName: "graphNodeIndex") as? SKLabelNode)?.text == (_initialNode.childNode(withName: "graphNodeIndex") as? SKLabelNode)?.text }) else { return }
-                guard let endVertex = adjacencyList.adjacencyDict.keys.first(where: { ($0.data.childNode(withName: "graphNodeIndex") as? SKLabelNode)?.text == (_endNode.childNode(withName: "graphNodeIndex") as? SKLabelNode)?.text }) else { return }
+                guard let initialVertex = adjacencyList.adjacencyDict.keys.first(where: { $0.data.graphNodeIndex.text == _initialNode.graphNodeIndex.text }) else { return }
+                guard let endVertex = adjacencyList.adjacencyDict.keys.first(where: { $0.data.graphNodeIndex.text == _endNode.graphNodeIndex.text }) else { return }
 
                 adjacencyList.add(.undirected, from: initialVertex, to: endVertex, weight: 0)
 

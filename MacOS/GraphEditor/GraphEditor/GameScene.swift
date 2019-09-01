@@ -148,6 +148,7 @@ class GameScene: SKScene {
                 adjacencyList.add(.undirected, from: initialVertex, to: endVertex, weight: 0)
 
                 adjacencyListString = adjacencyList.description as! String
+                _ = depthFirstSearch(from: initialVertex, to: endVertex, graph: adjacencyList)
             }
 
             initialNode = nil
@@ -170,39 +171,60 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
     }
-}
 
-// MARK: - DFS
+    // MARK: - DFS
 
-func depthFirstSearch<T: Hashable>(from start: Vertex<T>, to end: Vertex<T>, graph: AdjacencyList<T>) -> Stack<Vertex<T>> {
+    func depthFirstSearch<T: Hashable>(from start: Vertex<T>, to end: Vertex<T>, graph: AdjacencyList<T>) -> Stack<Vertex<T>> {
 
-    var visited = Set<Vertex<T>>()
-    var stack = Stack<Vertex<T>>()
+        var visited = Set<Vertex<T>>()
+        var stack = Stack<Vertex<T>>()
 
-    // TODO: -
-    stack.push(start)
-    visited.insert(start)
+        numberOfCycles = 0
 
-    outer: while let vertex = stack.peek(), vertex != end {
+        stack.push(start)
+        visited.insert(start)
 
-        guard let neighbors = graph.edges(from: vertex),
-            neighbors.count > 0 else {
-                _ = stack.pop()
-                continue
-        }
+        outer: while let vertex = stack.peek()/*, vertex != end*/ {
 
-        for edge in neighbors {
-            if !visited.contains(edge.destination) {
-                visited.insert(edge.destination)
-                stack.push(edge.destination)
-                print(stack.description)
-                continue outer
+            guard let neighbors = graph.edges(from: vertex),
+                neighbors.count > 0 else {
+                    _ = stack.pop()
+                    continue
             }
+
+            for edge in neighbors {
+                if visited.contains(edge.destination),
+                    stack.contains(edge.destination) {
+                    if let a = stack.lastMinusOne() {
+                        if a != edge.destination {
+                            print()
+                            print("Começa aqui")
+                            print()
+                            print(a)
+                            print(edge.destination)
+                            print(stack.description)
+                            numberOfCycles += 1
+                            print()
+                            print("Começa aqui")
+                            print()
+                        }
+                    }
+                }
+
+                if !visited.contains(edge.destination) {
+                    visited.insert(edge.destination)
+                    stack.push(edge.destination)
+                    print(stack.description)
+                    continue outer
+                }
+            }
+
+            print("backtrack from \(vertex)")
+            _ = stack.pop()
         }
 
-        print("backtrack from \(vertex)")
-        _ = stack.pop()
+        return stack
     }
-
-    return stack
 }
+
+

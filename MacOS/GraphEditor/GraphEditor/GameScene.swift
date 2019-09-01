@@ -15,12 +15,45 @@ class GameScene: SKScene {
     var currentlyDrawnLine: SKShapeNode?
     var currentInitialPositionOfLine: CGPoint?
     var adjacencyList = AdjacencyList<GraphNode>()
+    var adjacencyListLabel: SKLabelNode!
+    var numberOfCyclesLabel: SKLabelNode!
+    var numberOfCycles = 0 {
+        didSet {
+            numberOfCyclesLabel.text = "Number of Cycles: \(numberOfCycles)"
+
+        }
+    }
+    var adjacencyListString = "" {
+        didSet {
+            adjacencyListLabel.text = adjacencyListString
+            adjacencyListLabel.position = CGPoint(x: size.width * 0.02, y: size.height * 0.95)
+        }
+    }
 
     fileprivate var initialNode: GraphNode?
     fileprivate var endNode: GraphNode?
     
     override func didMove(to view: SKView) {
         self.backgroundColor = .white
+        setupAdjacencyListLabel()
+        setupNumberOfCyclesLabel()
+    }
+
+    func setupAdjacencyListLabel() {
+        adjacencyListLabel = SKLabelNode(text: "")
+        adjacencyListLabel.numberOfLines = 20
+        adjacencyListLabel.position = CGPoint(x: size.width * 0.02, y: size.height * 0.95)
+        adjacencyListLabel.fontColor = .black
+        adjacencyListLabel.horizontalAlignmentMode = .left
+        adjacencyListLabel.verticalAlignmentMode = .top
+        addChild(adjacencyListLabel)
+    }
+
+    func setupNumberOfCyclesLabel() {
+        numberOfCyclesLabel = SKLabelNode(text: "Number Of Cycles: ")
+        numberOfCyclesLabel.position = CGPoint(x: size.width * 0.75, y: size.height * 0.9)
+        numberOfCyclesLabel.fontColor = .black
+        addChild(numberOfCyclesLabel)
     }
     
     func touchDown(atPoint pos: CGPoint) {
@@ -114,7 +147,7 @@ class GameScene: SKScene {
 
                 adjacencyList.add(.undirected, from: initialVertex, to: endVertex, weight: 0)
 
-                print(adjacencyList.description)
+                adjacencyListString = adjacencyList.description as! String
             }
 
             initialNode = nil

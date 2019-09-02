@@ -3,6 +3,10 @@ Neste repositório você encontrará um editor de grafos que diz se todos os com
 
 Como o algoritmo padrão para detectar a bipartição só faz sentido em grafos conectados, e o editor permite desenhar grafos não-conectados, foi feita uma alteração no algoritmo para que detecte se todos os componentes do grafo (não-direcionado) são bipartidos.
 
+## Demonstração
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/lizohPcGO3A/0.jpg)](https://www.youtube.com/watch?v=lizohPcGO3A)
+
 ![Grafo bipartido](Images/Bipartite-true.png)
 ![Grafo não-bipartido](Images/Bipartite-false.png)
 
@@ -10,6 +14,7 @@ Como o algoritmo padrão para detectar a bipartição só faz sentido em grafos 
 - Para criar um nó, clique na tela com o botão esquerdo do mouse.
 - Para criar uma aresta, clique em um nó, arraste até outro nó, e solte o botão.
 - Para apagar o grafo, aperte a barra de espaço.
+- Para apagar uma aresta, arreste o mouse para cima da aresta a ser deletada e clique com o botão esquerdo do mouse no botão "x" que vai aparecer em cima da aresta
 
 ## Alunos:
 

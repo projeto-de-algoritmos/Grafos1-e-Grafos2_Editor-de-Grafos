@@ -193,6 +193,8 @@ class GameScene: SKScene {
                         vertexColor[neighborNode] = 1-vertexColor[current]!
                         queue.enqueue(neighborNode)
                         verticesToVisit.remove(neighborNode)
+                        (neighborNode.data as! GraphNode).fillColor = vertexColor[neighborNode] == 2 ? NSColor(calibratedRed: 39/255, green: 60/255, blue: 117/255, alpha: 1) : NSColor(calibratedRed: 194/255, green: 54/255, blue: 22/255, alpha: 1)
+                        (neighborNode.data as! GraphNode).graphNodeIndex.fontColor = vertexColor[neighborNode] == 2 ? .white : .black
                         print(neighborNode.data)
                     } else if vertexColor[current] == vertexColor[neighborNode] {
                         return false

@@ -1,7 +1,13 @@
-# Trabalho1 Grafos
+# Trabalho 1 de Grafos
+Neste repositório você encontrará um editor de grafos que diz se todos os componentes do grafo desenhado são bipartidos ou não. Cada nó é pintado de acordo com sua camada, de forma alternada. Se houverem dois nós da mesma camada com uma aresta entre eles, o algoritmo detecta isso e classifica o grafo como não bipartido.
+
+Como o algoritmo padrão para detectar a bipartição só faz sentido em grafos conectados, e o editor permite desenhar grafos não-conectados, foi feita uma alteração no algoritmo para que detecte se todos os componentes do grafo (não-direcionado) são bipartidos.
+
+![Grafo bipartido](Images/Bipartite-true.png)
+![Grafo não-bipartido](Images/Bipartite-false.png)
 
 
-Alunos:
+## Alunos:
 
 |Nome|Matrícula|
 |--|--|

@@ -43,6 +43,10 @@ extension AdjacencyList: Graphable {
         }
         return result
     }
+    
+    func reset() {
+        adjacencyDict.removeAll()
+    }
 
     func createVertex(data: Element) -> Vertex<Element> {
         let vertex = Vertex(data: data)

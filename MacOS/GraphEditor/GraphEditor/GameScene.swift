@@ -10,7 +10,7 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
-    var nodeIndex = 0
+    var nodeIndex = 1
     var isDrawingLine = false
     var currentlyDrawnLine: SKShapeNode?
     var currentInitialPositionOfLine: CGPoint?
@@ -156,6 +156,12 @@ class GameScene: SKScene {
     override func keyDown(with event: NSEvent) {
         switch event.keyCode {
         case 0x31:
+            adjacencyList.reset()
+            self.removeAllChildren()
+            adjacencyListString = adjacencyList.description as! String
+            setupAdjacencyListLabel()
+            setupBipartitenessLabel()
+            nodeIndex = 1
             break
         default:
             print("keyDown: \(event.characters!) keyCode: \(event.keyCode)")

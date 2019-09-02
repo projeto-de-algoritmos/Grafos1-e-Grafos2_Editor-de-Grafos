@@ -16,13 +16,14 @@ class GameScene: SKScene {
     var currentInitialPositionOfLine: CGPoint?
     var adjacencyList = AdjacencyList<GraphNode>()
     var adjacencyListLabel: SKLabelNode!
-    var numberOfCyclesLabel: SKLabelNode!
-    var numberOfCycles = 0 {
+    var bipartitenessLabel: SKLabelNode!
+    
+    var areComponentsBipartite = true {
         didSet {
-            numberOfCyclesLabel.text = "Number of Cycles: \(numberOfCycles)"
-
+            bipartitenessLabel.text = "Are the components bipartite? \(areComponentsBipartite)"
         }
     }
+    
     var adjacencyListString = "" {
         didSet {
             adjacencyListLabel.text = adjacencyListString
@@ -36,7 +37,7 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         self.backgroundColor = .white
         setupAdjacencyListLabel()
-        setupNumberOfCyclesLabel()
+        setupBipartitenessLabel()
     }
 
     func setupAdjacencyListLabel() {
@@ -46,22 +47,17 @@ class GameScene: SKScene {
         adjacencyListLabel.fontColor = .black
         adjacencyListLabel.horizontalAlignmentMode = .left
         adjacencyListLabel.verticalAlignmentMode = .top
+        adjacencyListLabel.fontSize = 24
+        adjacencyListLabel.fontName = adjacencyListLabel.fontName! + "-Bold"
         addChild(adjacencyListLabel)
     }
 
-    func setupNumberOfCyclesLabel() {
-        numberOfCyclesLabel = SKLabelNode(text: "Number Of Cycles: ")
-        numberOfCyclesLabel.position = CGPoint(x: size.width * 0.75, y: size.height * 0.9)
-        numberOfCyclesLabel.fontColor = .black
-        addChild(numberOfCyclesLabel)
-    }
-    
-    func touchDown(atPoint pos: CGPoint) {
-        
-    }
-    
-    func touchMoved(toPoint pos: CGPoint) {
-        
+    func setupBipartitenessLabel() {
+        bipartitenessLabel = SKLabelNode(text: "Are the components bipartite?")
+        bipartitenessLabel.position = CGPoint(x: size.width * 0.95, y: size.height * 0.9)
+        bipartitenessLabel.fontColor = .black
+        bipartitenessLabel.horizontalAlignmentMode = .right
+        addChild(bipartitenessLabel)
     }
     
     func touchUp(atPoint pos: CGPoint) {
@@ -71,6 +67,7 @@ class GameScene: SKScene {
         graphNode.position = CGPoint(x: pos.x, y: pos.y)
 
         _ = adjacencyList.createVertex(data: graphNode)
+        adjacencyListString = adjacencyList.description as! String
     }
     
     override func mouseDown(with event: NSEvent) {
@@ -96,14 +93,10 @@ class GameScene: SKScene {
             isDrawingLine = true
             currentlyDrawnLine!.zPosition = -1
             self.addChild(currentlyDrawnLine!)
-        } else {
-            self.touchDown(atPoint: event.location(in: self))
         }
-        
     }
     
     override func mouseDragged(with event: NSEvent) {
-        self.touchMoved(toPoint: event.location(in: self))
         if isDrawingLine {
             let linePath = CGMutablePath()
             linePath.move(to: currentInitialPositionOfLine!)
@@ -148,7 +141,8 @@ class GameScene: SKScene {
                 adjacencyList.add(.undirected, from: initialVertex, to: endVertex, weight: 0)
 
                 adjacencyListString = adjacencyList.description as! String
-                _ = depthFirstSearch(from: initialVertex, to: endVertex, graph: adjacencyList)
+                
+                areComponentsBipartite = isBipartite(graph: adjacencyList)
             }
 
             initialNode = nil
@@ -168,62 +162,40 @@ class GameScene: SKScene {
         }
     }
     
-    override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
-    }
-
-    // MARK: - DFS
-
-    func depthFirstSearch<T: Hashable>(from start: Vertex<T>, to end: Vertex<T>, graph: AdjacencyList<T>) -> Stack<Vertex<T>> {
-
-        var visited = Set<Vertex<T>>()
-        var stack = Stack<Vertex<T>>()
-
-        numberOfCycles = 0
-
-        stack.push(start)
-        visited.insert(start)
-
-        outer: while let vertex = stack.peek()/*, vertex != end*/ {
-
-            guard let neighbors = graph.edges(from: vertex),
-                neighbors.count > 0 else {
-                    _ = stack.pop()
-                    continue
-            }
-
-            for edge in neighbors {
-                if visited.contains(edge.destination),
-                    stack.contains(edge.destination) {
-                    if let a = stack.lastMinusOne() {
-                        if a != edge.destination {
-                            print()
-                            print("Começa aqui")
-                            print()
-                            print(a)
-                            print(edge.destination)
-                            print(stack.description)
-                            numberOfCycles += 1
-                            print()
-                            print("Começa aqui")
-                            print()
-                        }
+    func isBipartite<T: Hashable>(graph: AdjacencyList<T>) -> Bool {
+        var verticesToVisit = Set<Vertex<T>>()
+        var vertexColor: Dictionary<Vertex<T>, Int> = Dictionary<Vertex<T>, Int>()
+        for key in graph.adjacencyDict.keys {
+            vertexColor[key] = -1
+            verticesToVisit.insert(key)
+        }
+        
+        //Visit each component
+        repeat {
+            var queue = Queue<Vertex<T>>()
+            queue.enqueue(verticesToVisit.first!)
+            
+            print("---------------------------")
+            
+            print(verticesToVisit.first!.data)
+            while let current = queue.dequeue() {
+                verticesToVisit.remove(current)
+                for edge in graph.adjacencyDict[current] ?? [] {
+                    let neighborNode = edge.destination
+                    
+                    if vertexColor[neighborNode] == -1 {
+                        vertexColor[neighborNode] = 1-vertexColor[current]!
+                        queue.enqueue(neighborNode)
+                        verticesToVisit.remove(neighborNode)
+                        print(neighborNode.data)
+                    } else if vertexColor[current] == vertexColor[neighborNode] {
+                        return false
                     }
                 }
-
-                if !visited.contains(edge.destination) {
-                    visited.insert(edge.destination)
-                    stack.push(edge.destination)
-                    print(stack.description)
-                    continue outer
-                }
             }
-
-            print("backtrack from \(vertex)")
-            _ = stack.pop()
-        }
-
-        return stack
+        } while verticesToVisit.count > 0
+        
+        return true
     }
 }
 

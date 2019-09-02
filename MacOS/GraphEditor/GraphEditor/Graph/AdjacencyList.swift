@@ -29,7 +29,7 @@ extension AdjacencyList: Graphable {
     public typealias Element = T
     
     var description: CustomStringConvertible {
-        var result = ""
+        var result = " "
         for (vertex, edges) in adjacencyDict {
             var edgeString = ""
             for (index, edge) in edges.enumerated() {

@@ -6,6 +6,10 @@ Como o algoritmo padrão para detectar a bipartição só faz sentido em grafos 
 ![Grafo bipartido](Images/Bipartite-true.png)
 ![Grafo não-bipartido](Images/Bipartite-false.png)
 
+## Comandos
+- Para criar um nó, clique na tela com o botão esquerdo do mouse.
+- Para criar uma aresta, clique em um nó, arraste até outro nó, e solte o botão.
+- Para apagar o grafo, aperte a barra de espaço.
 
 ## Alunos:
 

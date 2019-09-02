@@ -47,6 +47,15 @@ extension AdjacencyList: Graphable {
     func reset() {
         adjacencyDict.removeAll()
     }
+    
+    func deleteEdge(between vertex1: Vertex<Element>, and vertex2: Vertex<Element>) {
+        adjacencyDict[vertex1]?.removeAll(where: { (edge) -> Bool in
+            return edge.destination == vertex2
+        })
+        adjacencyDict[vertex2]?.removeAll(where: { (edge) -> Bool in
+            return edge.destination == vertex1
+        })
+    }
 
     func createVertex(data: Element) -> Vertex<Element> {
         let vertex = Vertex(data: data)

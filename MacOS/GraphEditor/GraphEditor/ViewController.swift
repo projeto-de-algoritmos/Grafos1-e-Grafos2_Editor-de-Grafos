@@ -25,5 +25,14 @@ class ViewController: NSViewController {
             view.ignoresSiblingOrder = true
         }
     }
+    
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        
+        skView.window?.acceptsMouseMovedEvents = true
+        skView.window?.initialFirstResponder = skView
+        skView.window?.makeFirstResponder(skView.scene)
+        
+    }
 }
 

@@ -11,9 +11,10 @@ import GameplayKit
 
 class GameScene: SKScene {
     var nodeIndex = 1
+    
     var isDrawingLine = false
-    var currentlyDrawnLine: SKShapeNode?
-    var currentInitialPositionOfLine: CGPoint?
+    var currentlyDrawnLine: EdgeNode<GraphNode>?
+    
     var adjacencyList = AdjacencyList<GraphNode>()
     var adjacencyListLabel: SKLabelNode!
     var bipartitenessLabel: SKLabelNode!
@@ -32,7 +33,6 @@ class GameScene: SKScene {
     }
 
     fileprivate var initialNode: GraphNode?
-    fileprivate var endNode: GraphNode?
     
     override func didMove(to view: SKView) {
         self.backgroundColor = .white
@@ -83,25 +83,46 @@ class GameScene: SKScene {
             }
         }
         if let touchedGraphNode = touchedGraphNode {
-            let linePath = CGMutablePath()
-            linePath.move(to: touchedGraphNode.position)
-            linePath.addLine(to: touchedGraphNode.position)
-            currentlyDrawnLine = SKShapeNode(path: linePath)
-            currentlyDrawnLine!.strokeColor = .black
-            currentlyDrawnLine?.lineWidth = 3
-            currentInitialPositionOfLine = touchedGraphNode.position
+            currentlyDrawnLine = EdgeNode(source: Vertex<GraphNode>(data: touchedGraphNode), initialPosition: touchedGraphNode.position)
             isDrawingLine = true
-            currentlyDrawnLine!.zPosition = -1
             self.addChild(currentlyDrawnLine!)
         }
     }
     
     override func mouseDragged(with event: NSEvent) {
         if isDrawingLine {
-            let linePath = CGMutablePath()
-            linePath.move(to: currentInitialPositionOfLine!)
-            linePath.addLine(to: event.location(in: self))
-            currentlyDrawnLine!.path = linePath
+            currentlyDrawnLine!.moveEndOfLine(to: event.location(in: self))
+        }
+    }
+    
+    var hoveredEdges: Queue<EdgeNode<GraphNode>> = Queue<EdgeNode<GraphNode>>()
+    
+    override func mouseMoved(with event: NSEvent) {
+        super.mouseMoved(with: event)
+        
+        let location = event.location(in: self)
+        let touchedNodes = nodes(at: location)
+        
+        var touchedEdgeNode: EdgeNode<GraphNode>? = nil
+        for touchedNode in touchedNodes {
+            if touchedNode is EdgeNode<GraphNode> {
+                touchedEdgeNode = (touchedNode as! EdgeNode<GraphNode>)
+                touchedEdgeNode!.displayDeleteButton()
+                if hoveredEdges.peek() != touchedEdgeNode {
+                    hoveredEdges.enqueue(touchedEdgeNode!)
+                }
+                
+                
+                if hoveredEdges.count > 1 {
+                    hoveredEdges.dequeue()?.hideDeleteButton()
+                }
+                
+                break
+            }
+        }
+        
+        if touchedEdgeNode == nil && hoveredEdges.count == 1 {
+            hoveredEdges.dequeue()!.hideDeleteButton()
         }
     }
     
@@ -109,34 +130,43 @@ class GameScene: SKScene {
         let location = event.location(in: self)
         let touchedNodes = nodes(at: location)
         
+        var hasDeletedAnEdge = false
+        
         var touchedGraphNode: GraphNode? = nil
         for touchedNode in touchedNodes {
             if touchedNode is GraphNode {
                 touchedGraphNode = (touchedNode as! GraphNode)
-                endNode = touchedGraphNode
-                break
+            } else if touchedNode.name == "deleteButton" {
+                let source = (touchedNode.parent as! EdgeNode<GraphNode>).source
+                if let destination = (touchedNode.parent as! EdgeNode<GraphNode>).destination {
+                    adjacencyList.deleteEdge(between: source, and: destination)
+                    let edgeNode = touchedNode.parent
+                    edgeNode?.removeAllChildren()
+                    edgeNode?.removeFromParent()
+                    hasDeletedAnEdge = true
+                    
+                    adjacencyListString = adjacencyList.description as! String
+                    areComponentsBipartite = isBipartite(graph: adjacencyList)
+                }
             }
         }
         if isDrawingLine {
             if touchedGraphNode != nil {
-                let linePath = CGMutablePath()
-                linePath.move(to: currentInitialPositionOfLine!)
-                linePath.addLine(to: touchedGraphNode!.position)
-                currentlyDrawnLine!.path = linePath
+                currentlyDrawnLine!.moveEndOfLine(to: touchedGraphNode!.position)
+                currentlyDrawnLine!.destination = Vertex<GraphNode>(data: touchedGraphNode!)
             } else {
                 currentlyDrawnLine!.removeFromParent()
             }
             
-            currentInitialPositionOfLine = nil
             currentlyDrawnLine = nil
             isDrawingLine = false
 
             if let _initialNode = initialNode,
-                let _endNode = endNode,
-                _initialNode != endNode {
+                let _endNode = touchedGraphNode,
+                _initialNode != touchedGraphNode {
 
-                guard let initialVertex = adjacencyList.adjacencyDict.keys.first(where: { $0.data.graphNodeIndex.text == _initialNode.graphNodeIndex.text }) else { return }
-                guard let endVertex = adjacencyList.adjacencyDict.keys.first(where: { $0.data.graphNodeIndex.text == _endNode.graphNodeIndex.text }) else { return }
+                let initialVertex = Vertex<GraphNode>(data: _initialNode)
+                let endVertex = Vertex<GraphNode>(data: _endNode)
 
                 adjacencyList.add(.undirected, from: initialVertex, to: endVertex, weight: 0)
 
@@ -146,9 +176,8 @@ class GameScene: SKScene {
             }
 
             initialNode = nil
-            endNode = nil
 
-        } else {
+        } else if !hasDeletedAnEdge {
             self.touchUp(atPoint: event.location(in: self))
         }
     }

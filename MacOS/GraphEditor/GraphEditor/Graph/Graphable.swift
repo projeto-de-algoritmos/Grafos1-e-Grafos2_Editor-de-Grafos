@@ -45,6 +45,6 @@ extension Graphable {
     public func dijkstra(from source: Vertex<Element>, to destination: Vertex<Element>) -> Edge<Element>? {
 
         var visits: [Vertex<Element> : Visit<Element>] = [source: .source]
-        var priorityQueue
+        var priorityQueue = PriorityQueue
     }
 }

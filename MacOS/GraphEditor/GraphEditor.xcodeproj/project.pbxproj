@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		6E071EC5232A774200B963F1 /* Visit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E071EC4232A774200B963F1 /* Visit.swift */; };
 		6E071EC7232A790100B963F1 /* PriorityQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E071EC6232A790100B963F1 /* PriorityQueue.swift */; };
+		6E071EC9232A79EB00B963F1 /* Heap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E071EC8232A79EB00B963F1 /* Heap.swift */; };
 		6E41A348231AED5F0077AD24 /* Edge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E41A344231AED5F0077AD24 /* Edge.swift */; };
 		6E41A349231AED5F0077AD24 /* AdjacencyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E41A345231AED5F0077AD24 /* AdjacencyList.swift */; };
 		6E41A34A231AED5F0077AD24 /* Graphable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E41A346231AED5F0077AD24 /* Graphable.swift */; };
@@ -27,6 +28,7 @@
 /* Begin PBXFileReference section */
 		6E071EC4232A774200B963F1 /* Visit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visit.swift; sourceTree = "<group>"; };
 		6E071EC6232A790100B963F1 /* PriorityQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityQueue.swift; sourceTree = "<group>"; };
+		6E071EC8232A79EB00B963F1 /* Heap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Heap.swift; sourceTree = "<group>"; };
 		6E41A344231AED5F0077AD24 /* Edge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Edge.swift; sourceTree = "<group>"; };
 		6E41A345231AED5F0077AD24 /* AdjacencyList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdjacencyList.swift; sourceTree = "<group>"; };
 		6E41A346231AED5F0077AD24 /* Graphable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Graphable.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				6E41A353231B05230077AD24 /* Stack.swift */,
 				E2EE3466231C9244005C393C /* Queue.swift */,
 				6E071EC6232A790100B963F1 /* PriorityQueue.swift */,
+				6E071EC8232A79EB00B963F1 /* Heap.swift */,
 			);
 			path = AuxiliaryDataStructures;
 			sourceTree = "<group>";
@@ -211,6 +214,7 @@
 				6E41A348231AED5F0077AD24 /* Edge.swift in Sources */,
 				E2EE344F231A0978005C393C /* AppDelegate.swift in Sources */,
 				6E071EC7232A790100B963F1 /* PriorityQueue.swift in Sources */,
+				6E071EC9232A79EB00B963F1 /* Heap.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

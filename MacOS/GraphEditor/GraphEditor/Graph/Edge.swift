@@ -13,7 +13,7 @@ enum EdgeType {
     case undirected
 }
 
-struct Edge<T: Hashable> {
+public struct Edge<T: Hashable> {
     var source: Vertex<T>
     var destination: Vertex<T>
     let weight: Double?

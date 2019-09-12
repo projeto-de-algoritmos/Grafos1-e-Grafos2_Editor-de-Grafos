@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E071EC5232A774200B963F1 /* Visit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E071EC4232A774200B963F1 /* Visit.swift */; };
+		6E071EC7232A790100B963F1 /* PriorityQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E071EC6232A790100B963F1 /* PriorityQueue.swift */; };
 		6E41A348231AED5F0077AD24 /* Edge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E41A344231AED5F0077AD24 /* Edge.swift */; };
 		6E41A349231AED5F0077AD24 /* AdjacencyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E41A345231AED5F0077AD24 /* AdjacencyList.swift */; };
 		6E41A34A231AED5F0077AD24 /* Graphable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E41A346231AED5F0077AD24 /* Graphable.swift */; };
@@ -23,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6E071EC4232A774200B963F1 /* Visit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visit.swift; sourceTree = "<group>"; };
+		6E071EC6232A790100B963F1 /* PriorityQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityQueue.swift; sourceTree = "<group>"; };
 		6E41A344231AED5F0077AD24 /* Edge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Edge.swift; sourceTree = "<group>"; };
 		6E41A345231AED5F0077AD24 /* AdjacencyList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdjacencyList.swift; sourceTree = "<group>"; };
 		6E41A346231AED5F0077AD24 /* Graphable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Graphable.swift; sourceTree = "<group>"; };
@@ -52,14 +56,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6E071EC1232A756B00B963F1 /* Dijkstra */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Dijkstra;
+			sourceTree = "<group>";
+		};
 		6E41A343231AED4A0077AD24 /* Graph */ = {
 			isa = PBXGroup;
 			children = (
+				6E071EC1232A756B00B963F1 /* Dijkstra */,
 				6E41A352231B05160077AD24 /* AuxiliaryDataStructures */,
 				6E41A345231AED5F0077AD24 /* AdjacencyList.swift */,
 				6E41A344231AED5F0077AD24 /* Edge.swift */,
 				6E41A346231AED5F0077AD24 /* Graphable.swift */,
 				6E41A347231AED5F0077AD24 /* Vertex.swift */,
+				6E071EC4232A774200B963F1 /* Visit.swift */,
 			);
 			path = Graph;
 			sourceTree = "<group>";
@@ -78,6 +91,7 @@
 			children = (
 				6E41A353231B05230077AD24 /* Stack.swift */,
 				E2EE3466231C9244005C393C /* Queue.swift */,
+				6E071EC6232A790100B963F1 /* PriorityQueue.swift */,
 			);
 			path = AuxiliaryDataStructures;
 			sourceTree = "<group>";
@@ -189,12 +203,14 @@
 				6E41A34A231AED5F0077AD24 /* Graphable.swift in Sources */,
 				E2DF15FB231D6AC100D80DF5 /* EdgeNode.swift in Sources */,
 				E2EE3457231A0978005C393C /* ViewController.swift in Sources */,
+				6E071EC5232A774200B963F1 /* Visit.swift in Sources */,
 				E2EE3455231A0978005C393C /* GameScene.swift in Sources */,
 				E2EE3467231C9244005C393C /* Queue.swift in Sources */,
 				E2EE3465231A96B5005C393C /* GraphNode.swift in Sources */,
 				6E41A34B231AED5F0077AD24 /* Vertex.swift in Sources */,
 				6E41A348231AED5F0077AD24 /* Edge.swift in Sources */,
 				E2EE344F231A0978005C393C /* AppDelegate.swift in Sources */,
+				6E071EC7232A790100B963F1 /* PriorityQueue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,6 +11,11 @@ import SpriteKit
 class EdgeNode<T: Hashable>: SKShapeNode {
     let source: Vertex<T>
     var destination: Vertex<T>? = nil
+    var weight: Double = 0.0 {
+        didSet {
+            weigthLabel.text = "\(weight)"
+        }
+    }
     
     let initialPosition: CGPoint
     let deleteButton: SKShapeNode = {
@@ -30,15 +35,29 @@ class EdgeNode<T: Hashable>: SKShapeNode {
         
         return circle
     }()
+
+    var weigthLabel: SKLabelNode!
+
+    func setupWeigthLabel() {
+        weigthLabel = SKLabelNode(text: "\(weight)")
+        weigthLabel.fontColor = .blue
+        weigthLabel.horizontalAlignmentMode = .center
+        weigthLabel.verticalAlignmentMode = .center
+        weigthLabel.fontSize = 22
+        weigthLabel.fontName = weigthLabel.fontName! + "-Bold"
+        addChild(weigthLabel)
+    }
     
     init(source: Vertex<T>, initialPosition: CGPoint) {
         self.source = source
         self.initialPosition = initialPosition
         super.init()
+        setupWeigthLabel()
         hideDeleteButton()
         
         addChild(deleteButton)
-        
+
+
         moveEndOfLine(to: initialPosition)
         self.strokeColor = .black
         self.lineWidth = 3
@@ -52,14 +71,17 @@ class EdgeNode<T: Hashable>: SKShapeNode {
         self.path = linePath
         
         deleteButton.position = CGPoint(x: initialPosition.x + (pos.x-initialPosition.x)/2, y: initialPosition.y + (pos.y-initialPosition.y)/2)
+        weigthLabel.position = CGPoint(x: initialPosition.x + (pos.x-initialPosition.x)/2, y: initialPosition.y + (pos.y-initialPosition.y)/2)
     }
     
     func displayDeleteButton() {
         deleteButton.isHidden = false
+        weigthLabel.isHidden = true
     }
     
     func hideDeleteButton() {
         deleteButton.isHidden = true
+        weigthLabel.isHidden = false
     }
     
     required init?(coder aDecoder: NSCoder) {

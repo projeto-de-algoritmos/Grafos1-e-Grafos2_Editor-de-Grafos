@@ -58,17 +58,9 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		6E071EC1232A756B00B963F1 /* Dijkstra */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Dijkstra;
-			sourceTree = "<group>";
-		};
 		6E41A343231AED4A0077AD24 /* Graph */ = {
 			isa = PBXGroup;
 			children = (
-				6E071EC1232A756B00B963F1 /* Dijkstra */,
 				6E41A352231B05160077AD24 /* AuxiliaryDataStructures */,
 				6E41A345231AED5F0077AD24 /* AdjacencyList.swift */,
 				6E41A344231AED5F0077AD24 /* Edge.swift */,

@@ -14,30 +14,9 @@ public struct Stack<T: Hashable> {
     public mutating func push(_ element: T) {
         array.append(element)
     }
-    
+
     public mutating func pop() -> T? {
         return array.popLast()
-    }
-
-    public func peek() -> T? {
-        return array.last
-    }
-
-    public func lastMinusOne() -> T? {
-        guard array.count > 1 else { return nil }
-
-        return array[array.count - 2]
-    }
-
-    public func contains(_ element: T) -> Bool {
-        for _element in array {
-            if _element == element {
-                return true
-            }
-        }
-
-        return false
-
     }
 }
 

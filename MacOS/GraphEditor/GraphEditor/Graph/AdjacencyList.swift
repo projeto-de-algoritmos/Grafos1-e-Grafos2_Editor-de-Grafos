@@ -17,6 +17,10 @@ class AdjacencyList<T: Hashable, U: Hashable> {
         adjacencyDict[source]?.append(edge)
     }
 
+    public func getAllVertices() -> [Vertex<T>] {
+        return Array(adjacencyDict.keys)
+    }
+
     fileprivate func addUndirectedEdge(vertices: (Vertex<Element>, Vertex<Element>), weight: Double?, edgeNode: U) {
         let (source, destination) = vertices
         addDirectedEdge(from: source, to: destination, weight: weight, edgeNode: edgeNode)
@@ -94,4 +98,7 @@ extension AdjacencyList: Graphable {
     func edges(from source: Vertex<Element>) -> [Edge<Element, U>]? {
         return adjacencyDict[source]
     }
+
+
 }
+

@@ -39,7 +39,7 @@ extension Graphable {
     public func distance(to destination: Vertex<Element>, in tree: [Vertex<Element> : Visit<Element, U>]) -> Double {
 
         let path = route(to: destination, in: tree)
-        let distances = path.flatMap({ $0.weight })
+        let distances = path.compactMap({ $0.weight })
         return distances.reduce(0.0, { $0 + $1 })
     }
 

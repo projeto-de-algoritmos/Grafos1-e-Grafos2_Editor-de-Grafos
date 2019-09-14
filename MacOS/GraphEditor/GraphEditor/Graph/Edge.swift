@@ -20,6 +20,12 @@ public struct Edge<T: Hashable, U: Hashable> {
     let edgeNode: U
 }
 
+public struct Edge1<T: Hashable> {
+    var source: Vertex<T>
+    var destination: Vertex<T>
+    let weight: Double?
+}
+
 extension Edge: Hashable {
 
     public var hashValue: Int {

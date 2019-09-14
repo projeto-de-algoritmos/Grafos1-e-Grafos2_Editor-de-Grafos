@@ -28,6 +28,21 @@ class GraphNode: SKShapeNode {
         
         self.addChild(graphNodeIndex)
     }
+    
+    func colorAsStartNode() {
+        self.fillColor = NSColor(calibratedRed: 194/255, green: 54/255, blue: 22/255, alpha: 1)
+        self.graphNodeIndex.fontColor = .black
+    }
+    
+    func colorAsEndNode() {
+        self.fillColor = NSColor(calibratedRed: 39/255, green: 60/255, blue: 117/255, alpha: 1)
+        self.graphNodeIndex.fontColor = .white
+    }
+    
+    func colorAsNormalNode() {
+        self.fillColor = .white
+        self.graphNodeIndex.fontColor = .black
+    }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

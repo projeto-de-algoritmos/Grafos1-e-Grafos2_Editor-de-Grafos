@@ -8,9 +8,9 @@
 
 import Foundation
 
-public enum Visit<Element> where Element: Hashable {
+public enum Visit<Element, U> where Element: Hashable, U: Hashable {
 
     case source
 
-    case edge(Edge<Element>)
+    case edge(Edge<Element, U>)
 }

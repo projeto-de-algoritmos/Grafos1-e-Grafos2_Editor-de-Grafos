@@ -10,22 +10,23 @@ import Foundation
 
 protocol Graphable {
     associatedtype Element: Hashable
+    associatedtype U: Hashable
 
     var description: CustomStringConvertible { get }
 
     func createVertex(data: Element) -> Vertex<Element>
-    func add(_ type: EdgeType, from source: Vertex<Element>, to destination: Vertex<Element>, weight: Double?)
+    func add(_ type: EdgeType, from source: Vertex<Element>, to destination: Vertex<Element>, weight: Double?, edgeNode: U)
     func weight(from source: Vertex<Element>, to destination: Vertex<Element>) -> Double?
-    func edges(from source: Vertex<Element>) -> [Edge<Element>]?
+    func edges(from source: Vertex<Element>) -> [Edge<Element, U>]?
 
 }
 
 extension Graphable {
 
-    public func route(to destination: Vertex<Element>, in tree: [Vertex<Element> : Visit<Element>]) -> [Edge<Element>] {
+    public func route(to destination: Vertex<Element>, in tree: [Vertex<Element> : Visit<Element, U>]) -> [Edge<Element, U>] {
 
         var vertex = destination
-        var path: [Edge<Element>] = []
+        var path: [Edge<Element, U>] = []
 
         while let visit = tree[vertex], case .edge(let edge) = visit {
 
@@ -35,16 +36,16 @@ extension Graphable {
         return path
     }
 
-    public func distance(to destination: Vertex<Element>, in tree: [Vertex<Element> : Visit<Element>]) -> Double {
+    public func distance(to destination: Vertex<Element>, in tree: [Vertex<Element> : Visit<Element, U>]) -> Double {
 
         let path = route(to: destination, in: tree)
         let distances = path.flatMap({ $0.weight })
         return distances.reduce(0.0, { $0 + $1 })
     }
 
-    public func dijkstra(from source: Vertex<Element>, to destination: Vertex<Element>) -> [Edge<Element>]? {
+    public func dijkstra(from source: Vertex<Element>, to destination: Vertex<Element>) -> [Edge<Element, U>]? {
 
-        var visits: [Vertex<Element> : Visit<Element>] = [source: .source]
+        var visits: [Vertex<Element> : Visit<Element, U>] = [source: .source]
         var priorityQueue = PriorityQueue<Vertex<Element>>(sort: { self.distance(to: $0, in: visits) < self.distance(to: $1, in: visits) })
         priorityQueue.enqueue(source)
 

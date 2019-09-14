@@ -15,15 +15,8 @@ class GameScene: SKScene {
     var isDrawingLine = false
     var currentlyDrawnLine: EdgeNode<GraphNode>?
     
-    var adjacencyList = AdjacencyList<GraphNode>()
+    var adjacencyList = AdjacencyList<GraphNode, EdgeNode<GraphNode>>()
     var adjacencyListLabel: SKLabelNode!
-    var bipartitenessLabel: SKLabelNode!
-    
-    var areComponentsBipartite = true {
-        didSet {
-            bipartitenessLabel.text = "Are the components bipartite? \(areComponentsBipartite)"
-        }
-    }
     
     var adjacencyListString = "" {
         didSet {
@@ -37,7 +30,6 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         self.backgroundColor = .white
         setupAdjacencyListLabel()
-        setupBipartitenessLabel()
     }
 
     func setupAdjacencyListLabel() {
@@ -50,14 +42,6 @@ class GameScene: SKScene {
         adjacencyListLabel.fontSize = 24
         adjacencyListLabel.fontName = adjacencyListLabel.fontName! + "-Bold"
         addChild(adjacencyListLabel)
-    }
-
-    func setupBipartitenessLabel() {
-        bipartitenessLabel = SKLabelNode(text: "Are the components bipartite?")
-        bipartitenessLabel.position = CGPoint(x: size.width * 0.95, y: size.height * 0.9)
-        bipartitenessLabel.fontColor = .black
-        bipartitenessLabel.horizontalAlignmentMode = .right
-        addChild(bipartitenessLabel)
     }
     
     func touchUp(atPoint pos: CGPoint) {
@@ -126,6 +110,53 @@ class GameScene: SKScene {
         }
     }
     
+    func dialogOKCancel(question: String, text: String) -> Double? {
+        let alert: NSAlert = NSAlert()
+        alert.messageText = question
+        alert.accessoryView = NSTextField(frame: NSRect(x: 0, y: 0, width: 200, height: 20))
+        alert.informativeText = text
+        alert.alertStyle = NSAlert.Style.warning
+        alert.addButton(withTitle: "Continue")
+        let res = alert.runModal()
+        if res == NSApplication.ModalResponse.alertFirstButtonReturn {
+            return Double((alert.accessoryView as! NSTextField).stringValue)
+        }
+        return nil
+    }
+    
+    var startGraphNode: GraphNode?
+    var endGraphNode: GraphNode?
+    override func rightMouseUp(with event: NSEvent) {
+        let location = event.location(in: self)
+        let touchedNodes = nodes(at: location)
+        
+        var touchedGraphNode: GraphNode? = nil
+        for touchedNode in touchedNodes {
+            if touchedNode is GraphNode {
+                touchedGraphNode = (touchedNode as! GraphNode)
+            }
+        }
+        if(touchedGraphNode != nil) {
+            if startGraphNode == nil {
+                startGraphNode = touchedGraphNode
+                touchedGraphNode!.colorAsStartNode()
+            } else if endGraphNode == nil {
+                endGraphNode = touchedGraphNode
+                touchedGraphNode!.colorAsEndNode()
+                if let edges = adjacencyList.dijkstra(from: Vertex(data: startGraphNode!), to: Vertex(data: endGraphNode!)) {
+                    for edge in edges {
+                        edge.edgeNode.paintAsPath()
+                    }
+                }
+            } else {
+                startGraphNode!.colorAsNormalNode()
+                endGraphNode!.colorAsNormalNode()
+                startGraphNode = nil
+                endGraphNode = nil
+            }
+        }
+    }
+    
     override func mouseUp(with event: NSEvent) {
         let location = event.location(in: self)
         let touchedNodes = nodes(at: location)
@@ -146,7 +177,6 @@ class GameScene: SKScene {
                     hasDeletedAnEdge = true
                     
                     adjacencyListString = adjacencyList.description as! String
-                    areComponentsBipartite = isBipartite(graph: adjacencyList)
                 }
             }
         }
@@ -157,9 +187,6 @@ class GameScene: SKScene {
             } else {
                 currentlyDrawnLine!.removeFromParent()
             }
-            
-            currentlyDrawnLine = nil
-            isDrawingLine = false
 
             if let _initialNode = initialNode,
                 let _endNode = touchedGraphNode,
@@ -168,12 +195,17 @@ class GameScene: SKScene {
                 let initialVertex = Vertex<GraphNode>(data: _initialNode)
                 let endVertex = Vertex<GraphNode>(data: _endNode)
 
-                adjacencyList.add(.undirected, from: initialVertex, to: endVertex, weight: 0)
-
-                adjacencyListString = adjacencyList.description as! String
                 
-                areComponentsBipartite = isBipartite(graph: adjacencyList)
+                let answer = dialogOKCancel(question: "What's the weight of this edge?", text: "") ?? 0
+                currentlyDrawnLine!.weight = answer
+                
+                adjacencyList.add(.undirected, from: initialVertex, to: endVertex, weight: answer, edgeNode: currentlyDrawnLine!)
+                
+                adjacencyListString = adjacencyList.description as! String
             }
+            
+            currentlyDrawnLine = nil
+            isDrawingLine = false
 
             initialNode = nil
 
@@ -189,51 +221,10 @@ class GameScene: SKScene {
             self.removeAllChildren()
             adjacencyListString = adjacencyList.description as! String
             setupAdjacencyListLabel()
-            setupBipartitenessLabel()
             nodeIndex = 1
             break
         default:
             print("keyDown: \(event.characters!) keyCode: \(event.keyCode)")
         }
     }
-    
-    func isBipartite<T: Hashable>(graph: AdjacencyList<T>) -> Bool {
-        var verticesToVisit = Set<Vertex<T>>()
-        var vertexColor: Dictionary<Vertex<T>, Int> = Dictionary<Vertex<T>, Int>()
-        for key in graph.adjacencyDict.keys {
-            vertexColor[key] = -1
-            verticesToVisit.insert(key)
-        }
-        
-        //Visit each component
-        repeat {
-            var queue = Queue<Vertex<T>>()
-            queue.enqueue(verticesToVisit.first!)
-            
-            print("---------------------------")
-            
-            print(verticesToVisit.first!.data)
-            while let current = queue.dequeue() {
-                verticesToVisit.remove(current)
-                for edge in graph.adjacencyDict[current] ?? [] {
-                    let neighborNode = edge.destination
-                    
-                    if vertexColor[neighborNode] == -1 {
-                        vertexColor[neighborNode] = 1-vertexColor[current]!
-                        queue.enqueue(neighborNode)
-                        verticesToVisit.remove(neighborNode)
-                        (neighborNode.data as! GraphNode).fillColor = vertexColor[neighborNode] == 2 ? NSColor(calibratedRed: 39/255, green: 60/255, blue: 117/255, alpha: 1) : NSColor(calibratedRed: 194/255, green: 54/255, blue: 22/255, alpha: 1)
-                        (neighborNode.data as! GraphNode).graphNodeIndex.fontColor = vertexColor[neighborNode] == 2 ? .white : .black
-                        print(neighborNode.data)
-                    } else if vertexColor[current] == vertexColor[neighborNode] {
-                        return false
-                    }
-                }
-            }
-        } while verticesToVisit.count > 0
-        
-        return true
-    }
 }
-
-

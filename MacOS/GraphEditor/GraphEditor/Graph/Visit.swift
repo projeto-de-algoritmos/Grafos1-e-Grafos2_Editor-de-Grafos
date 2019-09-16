@@ -9,7 +9,6 @@
 import Foundation
 
 public enum Visit<Element> where Element: Hashable {
-
     case source
 
     case edge(Edge<Element>)

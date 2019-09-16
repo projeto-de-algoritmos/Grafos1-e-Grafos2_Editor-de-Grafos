@@ -26,9 +26,10 @@ public struct Edge1<T: Hashable> {
 }
 
 extension Edge: Hashable {
-
-    public var hashValue: Int {
-        return "\(source)\(destination)\(weight)".hashValue
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(source)
+        hasher.combine(destination)
+        hasher.combine(weight)
     }
 
     static public func ==(lhs: Edge<T>, rhs: Edge<T>) -> Bool {

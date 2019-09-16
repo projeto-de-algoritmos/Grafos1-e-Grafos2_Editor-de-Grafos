@@ -13,11 +13,10 @@ enum EdgeType {
     case undirected
 }
 
-public struct Edge<T: Hashable, U: Hashable> {
+public struct Edge<T: Hashable> {
     var source: Vertex<T>
     var destination: Vertex<T>
     let weight: Double?
-    let edgeNode: U
 }
 
 public struct Edge1<T: Hashable> {
@@ -32,7 +31,7 @@ extension Edge: Hashable {
         return "\(source)\(destination)\(weight)".hashValue
     }
 
-    static public func ==(lhs: Edge<T, U>, rhs: Edge<T, U>) -> Bool {
+    static public func ==(lhs: Edge<T>, rhs: Edge<T>) -> Bool {
         return lhs.source == rhs.source &&
             lhs.destination == rhs.destination &&
             lhs.weight == rhs.weight

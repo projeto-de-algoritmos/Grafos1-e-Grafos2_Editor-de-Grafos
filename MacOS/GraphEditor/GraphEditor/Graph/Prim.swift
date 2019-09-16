@@ -8,8 +8,8 @@
 
 import Foundation
 
-class Prim<T: Hashable, U: Hashable> {
-    typealias Graph = AdjacencyList<T, U>
+class Prim<T: Hashable> {
+    typealias Graph = AdjacencyList<T>
     var priorityQueue = PriorityQueue<(vertex: Vertex<T>, weight: Double, parent: Vertex<T>?)>(sort: { $0.weight < $1.weight })
 
     func produceMinimumSpanningTree(graph: Graph) -> (cost: Double, mst: Graph) {

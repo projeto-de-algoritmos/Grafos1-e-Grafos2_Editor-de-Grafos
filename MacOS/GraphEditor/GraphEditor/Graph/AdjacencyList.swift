@@ -8,23 +8,26 @@
 
 import Foundation
 
-class AdjacencyList<T: Hashable, U: Hashable> {
-    var adjacencyDict: [Vertex<T>: [Edge<T, U>]] = [:]
+class AdjacencyList<T: Hashable> {
+    var adjacencyDict: [Vertex<T>: [Edge<T>]] = [:]
     public init() { }
 
-    fileprivate func addDirectedEdge(from source: Vertex<Element>, to destination: Vertex<Element>, weight: Double?, edgeNode: U) {
-        let edge = Edge(source: source, destination: destination, weight: weight, edgeNode: edgeNode)
-        adjacencyDict[source]?.append(edge)
+    fileprivate func addDirectedEdge(from source: Vertex<Element>, to destination: Vertex<Element>, weight: Double?) {
+        let edge = Edge(source: source, destination: destination, weight: weight)
+        if adjacencyDict[source] == nil {
+            adjacencyDict[source] = []
+        }
+        adjacencyDict[source]!.append(edge)
     }
 
     public func getAllVertices() -> [Vertex<T>] {
         return Array(adjacencyDict.keys)
     }
 
-    fileprivate func addUndirectedEdge(vertices: (Vertex<Element>, Vertex<Element>), weight: Double?, edgeNode: U) {
+    fileprivate func addUndirectedEdge(vertices: (Vertex<Element>, Vertex<Element>), weight: Double?) {
         let (source, destination) = vertices
-        addDirectedEdge(from: source, to: destination, weight: weight, edgeNode: edgeNode)
-        addDirectedEdge(from: destination, to: source, weight: weight, edgeNode: edgeNode)
+        addDirectedEdge(from: source, to: destination, weight: weight)
+        addDirectedEdge(from: destination, to: source, weight: weight)
     }
 
 }
@@ -71,14 +74,14 @@ extension AdjacencyList: Graphable {
         return vertex
     }
 
-    func add(_ type: EdgeType, from source: Vertex<Element>, to destination: Vertex<Element>, weight: Double?, edgeNode: U) {
+    func add(_ type: EdgeType, from source: Vertex<Element>, to destination: Vertex<Element>, weight: Double?) {
 
         switch type {
 
         case .directed:
-            addDirectedEdge(from: source, to: destination, weight: weight, edgeNode: edgeNode)
+            addDirectedEdge(from: source, to: destination, weight: weight)
         case .undirected:
-            addUndirectedEdge(vertices: (source, destination), weight: weight, edgeNode: edgeNode)
+            addUndirectedEdge(vertices: (source, destination), weight: weight)
         }
     }
 
@@ -95,10 +98,15 @@ extension AdjacencyList: Graphable {
         return nil
     }
 
-    func edges(from source: Vertex<Element>) -> [Edge<Element, U>]? {
+    func edges(from source: Vertex<Element>) -> [Edge<Element>]? {
         return adjacencyDict[source]
     }
 
-
+    func edges() -> [Edge<Element>] {
+        var allEdges = [Edge<Element>]()
+        for edgeArray in adjacencyDict.values {
+            allEdges.append(contentsOf: edgeArray)
+        }
+        return allEdges
+    }
 }
-

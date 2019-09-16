@@ -68,6 +68,10 @@ class EdgeNode<T: Hashable>: SKShapeNode {
         self.strokeColor = .orange
     }
     
+    func unpaint() {
+        self.strokeColor = .black
+    }
+    
     func moveEndOfLine(to pos: CGPoint) {
         let linePath = CGMutablePath()
         linePath.move(to: initialPosition)
@@ -76,13 +80,11 @@ class EdgeNode<T: Hashable>: SKShapeNode {
         
         deleteButton.position = CGPoint(x: initialPosition.x + (pos.x-initialPosition.x)/2, y: initialPosition.y + (pos.y-initialPosition.y)/2)
         weightLabel.zRotation = atan2(initialPosition.y-pos.y, initialPosition.x-pos.x)
-        print(weightLabel.zRotation)
         if weightLabel.zRotation > CGFloat.pi/2 {
             weightLabel.zRotation -= CGFloat.pi
         } else if weightLabel.zRotation < -CGFloat.pi/2 {
             weightLabel.zRotation += CGFloat.pi
         }
-        print(weightLabel.zRotation)
         weightLabel.position = CGPoint(x: initialPosition.x + (pos.x-initialPosition.x)/2 + 10 * cos(weightLabel.zRotation + CGFloat.pi/2), y: initialPosition.y + (pos.y-initialPosition.y)/2 + 10 * sin(weightLabel.zRotation + CGFloat.pi/2))
         
     }

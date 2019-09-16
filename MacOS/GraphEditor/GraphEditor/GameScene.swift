@@ -15,7 +15,7 @@ class GameScene: SKScene {
     var isDrawingLine = false
     var currentlyDrawnLine: EdgeNode<GraphNode>?
     
-    var adjacencyList = AdjacencyList<GraphNode, EdgeNode<GraphNode>>()
+    var adjacencyList = AdjacencyList<GraphNode>()
     var adjacencyListLabel: SKLabelNode!
     
     var adjacencyListString = "" {
@@ -126,6 +126,7 @@ class GameScene: SKScene {
     
     var startGraphNode: GraphNode?
     var endGraphNode: GraphNode?
+    var paintedEdgeNodes: [EdgeNode<GraphNode>] = []
     override func rightMouseUp(with event: NSEvent) {
         let location = event.location(in: self)
         let touchedNodes = nodes(at: location)
@@ -140,19 +141,49 @@ class GameScene: SKScene {
             if startGraphNode == nil {
                 startGraphNode = touchedGraphNode
                 touchedGraphNode!.colorAsStartNode()
-            } else if endGraphNode == nil {
+            }
+            if endGraphNode == nil {
                 endGraphNode = touchedGraphNode
                 touchedGraphNode!.colorAsEndNode()
-                if let edges = adjacencyList.dijkstra(from: Vertex(data: startGraphNode!), to: Vertex(data: endGraphNode!)) {
-                    for edge in edges {
-                        edge.edgeNode.paintAsPath()
+                
+                let prim = Prim<GraphNode>()
+                for edge in prim.produceMinimumSpanningTree(graph: adjacencyList).mst.edges() {
+                    for node in nodes(at: edge.source.data.position) {
+                        if let edgeNode = node as? EdgeNode<GraphNode> {
+                            if edgeNode.source == edge.source && edgeNode.destination == edge.destination
+                                || edgeNode.source == edge.destination && edgeNode.destination == edge.source{
+                                edgeNode.paintAsPath()
+                                paintedEdgeNodes.append(edgeNode)
+                            }
+                        }
                     }
                 }
+                /* DIJKSTRA
+                 if let edges = adjacencyList.dijkstra(from: Vertex(data: startGraphNode!), to: Vertex(data: endGraphNode!)) {
+                 for edge in edges {
+                 for node in nodes(at: edge.source.data.position) {
+                 if let edgeNode = node as? EdgeNode<GraphNode> {
+                 if edgeNode.source == edge.source && edgeNode.destination == edge.destination
+                 || edgeNode.source == edge.destination && edgeNode.destination == edge.source{
+                 edgeNode.paintAsPath()
+                 paintedEdgeNodes.append(edgeNode)
+                 }
+                 }
+                 }
+                 }
+                 }
+                 */
+                
             } else {
                 startGraphNode!.colorAsNormalNode()
                 endGraphNode!.colorAsNormalNode()
                 startGraphNode = nil
                 endGraphNode = nil
+                
+                for paintedEdgeNode in paintedEdgeNodes {
+                    paintedEdgeNode.unpaint()
+                }
+                paintedEdgeNodes.removeAll(keepingCapacity: true)
             }
         }
     }
@@ -199,7 +230,7 @@ class GameScene: SKScene {
                 let answer = dialogOKCancel(question: "What's the weight of this edge?", text: "") ?? 0
                 currentlyDrawnLine!.weight = answer
                 
-                adjacencyList.add(.undirected, from: initialVertex, to: endVertex, weight: answer, edgeNode: currentlyDrawnLine!)
+                adjacencyList.add(.undirected, from: initialVertex, to: endVertex, weight: answer)
                 
                 adjacencyListString = adjacencyList.description as! String
             }

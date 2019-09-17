@@ -35,6 +35,20 @@ class GameScene: SKScene {
         addChild(cameraNode)
         camera = cameraNode
         setupAdjacencyListLabel()
+        setupDijkstraLabel()
+    }
+
+    func setupDijkstraLabel() {
+        dijkstraLabel = SKLabelNode(text: "")
+        dijkstraLabel.numberOfLines = 20
+        dijkstraLabel.position = CGPoint(x: size.width * 0.01, y: -size.height/2 + size.height * 0.95)
+        dijkstraLabel.zPosition = 100
+        dijkstraLabel.fontColor = .black
+        dijkstraLabel.horizontalAlignmentMode = .left
+        dijkstraLabel.verticalAlignmentMode = .top
+        dijkstraLabel.fontSize = 24
+        dijkstraLabel.fontName = adjacencyListLabel.fontName! + "-Bold"
+        self.camera!.addChild(dijkstraLabel)
     }
 
     func setupAdjacencyListLabel() {
@@ -222,13 +236,52 @@ class GameScene: SKScene {
         switch event.keyCode {
         case 0x31:
             adjacencyList.reset()
-            self.removeAllChildren()
+//            self.removeAllChildren()
+            self.children.forEach({ $0 == camera ? print("Camera Node") : $0.removeFromParent() })
             adjacencyListString = adjacencyList.description as! String
+            self.camera?.removeAllChildren()
             setupAdjacencyListLabel()
+            setupDijkstraLabel()
             nodeIndex = 1
             break
         default:
             print("keyDown: \(event.characters!) keyCode: \(event.keyCode)")
+        }
+    }
+
+    var dijkstraLabel: SKLabelNode!
+
+    var startGraphNode: GraphNode?
+    var endGraphNode: GraphNode?
+    override func rightMouseUp(with event: NSEvent) {
+        dijkstraLabel.text = "Least Cost Path:"
+        let location = event.location(in: self)
+        let touchedNodes = nodes(at: location)
+
+        var touchedGraphNode: GraphNode? = nil
+        for touchedNode in touchedNodes {
+            if touchedNode is GraphNode {
+                touchedGraphNode = (touchedNode as! GraphNode)
+            }
+        }
+        if(touchedGraphNode != nil) {
+            if startGraphNode == nil {
+                startGraphNode = touchedGraphNode
+                touchedGraphNode!.colorAsStartNode()
+            } else if endGraphNode == nil {
+                endGraphNode = touchedGraphNode
+                touchedGraphNode!.colorAsEndNode()
+                if let edges = adjacencyList.dijkstra(from: Vertex(data: startGraphNode!), to: Vertex(data: endGraphNode!)) {
+                    for edge in edges {
+                        dijkstraLabel.text = "\(dijkstraLabel.text ?? "")\n\(edge.source) -> \(edge.destination)"
+                    }
+                }
+            } else {
+                startGraphNode!.colorAsNormalNode()
+                endGraphNode!.colorAsNormalNode()
+                startGraphNode = nil
+                endGraphNode = nil
+            }
         }
     }
 }

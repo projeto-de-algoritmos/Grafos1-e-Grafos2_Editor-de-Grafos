@@ -1,20 +1,28 @@
-# Trabalho 1 de Grafos
-Neste repositório você encontrará um editor de grafos que diz se todos os componentes do grafo desenhado são bipartidos ou não. Cada nó é pintado de acordo com sua camada, de forma alternada. Se houverem dois nós da mesma camada com uma aresta entre eles, o algoritmo detecta isso e classifica o grafo como não bipartido.
+# Trabalho 2 de Grafos
+Neste repositório você encontrará um editor de grafos onde você pode criar o seu grafo(criando os nós, arestas e seus pesos) e ele automaticamente irá gerar e mostrar na tela a árvore geradora mínima do grafo utilizando o Algoritmo de Prim.
 
-Como o algoritmo padrão para detectar a bipartição só faz sentido em grafos conectados, e o editor permite desenhar grafos não-conectados, foi feita uma alteração no algoritmo para que detecte se todos os componentes do grafo (não-direcionado) são bipartidos.
+Além disso, também é possível ver o menor caminho entre dois respectivos nós, utilizando o algoritmos de Dijkstra.
 
 ## Demonstração
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/lizohPcGO3A/0.jpg)](https://www.youtube.com/watch?v=lizohPcGO3A)
+* Vídeo 
 
-![Grafo bipartido](Images/Bipartite-true.png)
-![Grafo não-bipartido](Images/Bipartite-false.png)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/3XnRGF7YrUA/0.jpg)](https://youtu.be/3XnRGF7YrUA)
+
+* Árvore Geradora Mínima
+
+![Árvore Geradora Mínima](Images/Arvore-Geradora-Minima.png)
+
+* Menor Caminho
+
+![Menor Caminho](Images/Menor-Caminho.png)
 
 ## Comandos
 - Para criar um nó, clique na tela com o botão esquerdo do mouse.
-- Para criar uma aresta, clique em um nó, arraste até outro nó, e solte o botão.
+- Para criar uma aresta, clique em um nó, arraste até outro nó, e solte o botão. Abrirá uma caixa de texto para inserir o peso do nó
 - Para apagar o grafo, aperte a barra de espaço.
-- Para apagar uma aresta, arreste o mouse para cima da aresta a ser deletada e clique com o botão esquerdo do mouse no botão "x" que vai aparecer em cima da aresta
+- Para apagar uma aresta, arreste o mouse para cima da aresta a ser deletada e clique com o botão esquerdo do mouse no botão "x" que vai aparecer em cima da aresta.
+- Para ver o menor caminho entre dois nós basta clicar com o botão direito em um nó e em seguida clicar com o botão direito em outro nó.
 
 ## Alunos:
 
@@ -22,3 +30,7 @@ Como o algoritmo padrão para detectar a bipartição só faz sentido em grafos 
 |--|--|
 |Luis Gustavo Avelino |15/0016310|
 |Matheus Felizola|17/0019098|
+
+## Trabalho 1
+
+Para acessar o trabalho 1 [clique aqui](https://github.com/projeto-de-algoritmos/Trabalhos-1-e-2---Grafos---Luis-Gustavo-Avelino-e-Matheus-Felizola)

@@ -13,4 +13,9 @@ extension SKView {
         super.scrollWheel(with: event)
         scene?.scrollWheel(with: event)
     }
+    
+    open override func rotate(with event: NSEvent) {
+        super.rotate(with: event)
+        scene?.rotate(with: event)
+    }
 }

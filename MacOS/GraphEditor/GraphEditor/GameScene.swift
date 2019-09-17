@@ -138,6 +138,10 @@ class GameScene: SKScene {
         self.camera!.position = CGPoint(x: self.camera!.position.x - event.scrollingDeltaX/3, y: self.camera!.position.y + event.scrollingDeltaY/3)
     }
     
+    override func rotate(with event: NSEvent) {
+        self.camera?.zRotation = self.camera!.zRotation - event.deltaZ/60
+    }
+    
     var paintedEdgeNodes: [EdgeNode<GraphNode>] = []
     
     override func mouseUp(with event: NSEvent) {

@@ -66,6 +66,7 @@ class GameScene: SKScene {
                 break
             }
         }
+        
         if let touchedGraphNode = touchedGraphNode {
             currentlyDrawnLine = EdgeNode(source: Vertex<GraphNode>(data: touchedGraphNode), initialPosition: touchedGraphNode.position)
             isDrawingLine = true
@@ -128,64 +129,7 @@ class GameScene: SKScene {
     var endGraphNode: GraphNode?
     var paintedEdgeNodes: [EdgeNode<GraphNode>] = []
     override func rightMouseUp(with event: NSEvent) {
-        let location = event.location(in: self)
-        let touchedNodes = nodes(at: location)
         
-        var touchedGraphNode: GraphNode? = nil
-        for touchedNode in touchedNodes {
-            if touchedNode is GraphNode {
-                touchedGraphNode = (touchedNode as! GraphNode)
-            }
-        }
-        if(touchedGraphNode != nil) {
-            if startGraphNode == nil {
-                startGraphNode = touchedGraphNode
-                touchedGraphNode!.colorAsStartNode()
-            }
-            if endGraphNode == nil {
-                endGraphNode = touchedGraphNode
-                touchedGraphNode!.colorAsEndNode()
-                
-                let prim = Prim<GraphNode>()
-                for edge in prim.produceMinimumSpanningTree(graph: adjacencyList).mst.edges() {
-                    for node in nodes(at: edge.source.data.position) {
-                        if let edgeNode = node as? EdgeNode<GraphNode> {
-                            if edgeNode.source == edge.source && edgeNode.destination == edge.destination
-                                || edgeNode.source == edge.destination && edgeNode.destination == edge.source{
-                                edgeNode.paintAsPath()
-                                paintedEdgeNodes.append(edgeNode)
-                            }
-                        }
-                    }
-                }
-                /* DIJKSTRA
-                 if let edges = adjacencyList.dijkstra(from: Vertex(data: startGraphNode!), to: Vertex(data: endGraphNode!)) {
-                 for edge in edges {
-                 for node in nodes(at: edge.source.data.position) {
-                 if let edgeNode = node as? EdgeNode<GraphNode> {
-                 if edgeNode.source == edge.source && edgeNode.destination == edge.destination
-                 || edgeNode.source == edge.destination && edgeNode.destination == edge.source{
-                 edgeNode.paintAsPath()
-                 paintedEdgeNodes.append(edgeNode)
-                 }
-                 }
-                 }
-                 }
-                 }
-                 */
-                
-            } else {
-                startGraphNode!.colorAsNormalNode()
-                endGraphNode!.colorAsNormalNode()
-                startGraphNode = nil
-                endGraphNode = nil
-                
-                for paintedEdgeNode in paintedEdgeNodes {
-                    paintedEdgeNode.unpaint()
-                }
-                paintedEdgeNodes.removeAll(keepingCapacity: true)
-            }
-        }
     }
     
     override func mouseUp(with event: NSEvent) {
@@ -233,14 +177,31 @@ class GameScene: SKScene {
                 adjacencyList.add(.undirected, from: initialVertex, to: endVertex, weight: answer)
                 
                 adjacencyListString = adjacencyList.description as! String
+                
+                for paintedEdgeNode in paintedEdgeNodes {
+                    paintedEdgeNode.unpaint()
+                }
+                paintedEdgeNodes.removeAll(keepingCapacity: true)
+                
+                let prim = Prim<GraphNode>()
+                for edge in prim.produceMinimumSpanningTree(graph: adjacencyList).mst.edges() {
+                    for node in nodes(at: edge.source.data.position) {
+                        if let edgeNode = node as? EdgeNode<GraphNode> {
+                            if edgeNode.source == edge.source && edgeNode.destination == edge.destination
+                                || edgeNode.source == edge.destination && edgeNode.destination == edge.source{
+                                edgeNode.paintAsPath()
+                                paintedEdgeNodes.append(edgeNode)
+                            }
+                        }
+                    }
+                }
             }
             
             currentlyDrawnLine = nil
             isDrawingLine = false
 
             initialNode = nil
-
-        } else if !hasDeletedAnEdge {
+        } else if !hasDeletedAnEdge && touchedGraphNode == nil {
             self.touchUp(atPoint: event.location(in: self))
         }
     }

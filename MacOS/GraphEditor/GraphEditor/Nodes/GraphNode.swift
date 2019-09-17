@@ -25,7 +25,7 @@ class GraphNode: SKShapeNode {
         self.fillColor = .white
         self.strokeColor = .black
         self.lineWidth = 3
-        
+        colorAsEndNode()
         self.addChild(graphNodeIndex)
     }
     

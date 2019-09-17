@@ -9,11 +9,18 @@
 import SpriteKit
 
 class EdgeNode<T: Hashable>: SKShapeNode {
+    private let formatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 2
+        return formatter
+    }()
+    
     let source: Vertex<T>
     var destination: Vertex<T>? = nil
-    var weight: Double = 0.0 {
+    var weight: Double = 0 {
         didSet {
-            weightLabel.text = "\(weight)"
+            weightLabel.text = formatter.string(from: NSNumber(value: weight))
         }
     }
     
@@ -39,7 +46,8 @@ class EdgeNode<T: Hashable>: SKShapeNode {
     var weightLabel: SKLabelNode!
 
     func setupWeightLabel() {
-        weightLabel = SKLabelNode(text: "\(weight)")
+        weightLabel = SKLabelNode(text: formatter.string(from: NSNumber(value: weight)))
+        weightLabel.name = "WeightLabel"
         weightLabel.fontColor = .black
         weightLabel.horizontalAlignmentMode = .center
         weightLabel.verticalAlignmentMode = .center

@@ -21,7 +21,6 @@ class GameScene: SKScene {
     var adjacencyListString = "" {
         didSet {
             adjacencyListLabel.text = adjacencyListString
-            adjacencyListLabel.position = CGPoint(x: size.width * 0.02, y: size.height * 0.95)
         }
     }
 
@@ -29,19 +28,26 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         self.backgroundColor = .white
+        let cameraNode = SKCameraNode()
+        
+        cameraNode.position = .zero//CGPoint(x: scene!.size.width / 2, y: scene!.size.height / 2)
+        
+        addChild(cameraNode)
+        camera = cameraNode
         setupAdjacencyListLabel()
     }
 
     func setupAdjacencyListLabel() {
         adjacencyListLabel = SKLabelNode(text: "")
         adjacencyListLabel.numberOfLines = 20
-        adjacencyListLabel.position = CGPoint(x: size.width * 0.02, y: size.height * 0.95)
+        adjacencyListLabel.position = CGPoint(x: -size.width/2 + size.width * 0.02, y: -size.height/2 + size.height * 0.95)
+        adjacencyListLabel.zPosition = 100
         adjacencyListLabel.fontColor = .black
         adjacencyListLabel.horizontalAlignmentMode = .left
         adjacencyListLabel.verticalAlignmentMode = .top
         adjacencyListLabel.fontSize = 24
         adjacencyListLabel.fontName = adjacencyListLabel.fontName! + "-Bold"
-        addChild(adjacencyListLabel)
+        self.camera!.addChild(adjacencyListLabel)
     }
     
     func touchUp(atPoint pos: CGPoint) {
@@ -86,6 +92,9 @@ class GameScene: SKScene {
         super.mouseMoved(with: event)
         
         let location = event.location(in: self)
+        //adjacencyListLabel.position = event.location(in: self.camera!)
+        print(adjacencyListLabel.position)
+        print(size)
         let touchedNodes = nodes(at: location)
         
         var touchedEdgeNode: EdgeNode<GraphNode>? = nil
@@ -125,12 +134,11 @@ class GameScene: SKScene {
         return nil
     }
     
-    var startGraphNode: GraphNode?
-    var endGraphNode: GraphNode?
-    var paintedEdgeNodes: [EdgeNode<GraphNode>] = []
-    override func rightMouseUp(with event: NSEvent) {
-        
+    override func scrollWheel(with event: NSEvent) {
+        self.camera!.position = CGPoint(x: self.camera!.position.x - event.scrollingDeltaX/3, y: self.camera!.position.y + event.scrollingDeltaY/3)
     }
+    
+    var paintedEdgeNodes: [EdgeNode<GraphNode>] = []
     
     override func mouseUp(with event: NSEvent) {
         let location = event.location(in: self)

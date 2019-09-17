@@ -22,3 +22,6 @@ Como o algoritmo padrão para detectar a bipartição só faz sentido em grafos 
 |--|--|
 |Luis Gustavo Avelino |15/0016310|
 |Matheus Felizola|17/0019098|
+
+## Trabalho 2
+Para acessar o trabalho 2 [clique aqui](https://github.com/projeto-de-algoritmos/Trabalhos-1-e-2---Grafos---Luis-Gustavo-Avelino-e-Matheus-Felizola/tree/trabalho2)
